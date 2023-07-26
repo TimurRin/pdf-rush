@@ -19,6 +19,16 @@ Features that we want to implement in the near future:
 
 ## [Unreleased]
 
+## [0.2.0] - 2023-07-26
+
+### Changed
+
+- Swap arrow keys bindings for rotation and page change
+
+### Fixed
+
+- Optimize rotation and removal changes display when folder has many or large files
+
 ## [0.1.0] - 2023-07-20
 
 ### Added
