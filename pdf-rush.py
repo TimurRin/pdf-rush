@@ -39,6 +39,7 @@ class PDFEditorApp:
         self.current_folder = application_path
         self.output_folder = os.path.join(self.current_folder, "_pdf_rush")
         self.replace_existing = tk.BooleanVar()
+        self.img_tk = None
         self.create_ui()
 
     def get_version_info(self):
@@ -289,7 +290,6 @@ class PDFEditorApp:
 
     def show_current_page(self):
         self.canvas.delete("all")
-        page_path = "current_page.png"
         file_path, page_index = self.all_pages[self.current_page]
         page_rotation = self.page_rotations[(file_path, page_index)]
         page_rotation_init = self.page_rotations_init[(file_path, page_index)]
@@ -324,26 +324,22 @@ class PDFEditorApp:
             )
 
         pix = rotated_page.get_pixmap()
-        pix.save(page_path, "png")
         doc.close()
 
-        img = Image.open(page_path)
-        img_width, img_height = img.size
-
-        scale_factor = min(
-            self.canvas_width / img_width, self.canvas_height / img_height
-        )
+        img_width, img_height = pix.width, pix.height
+        scale_factor = min(self.canvas_width / img_width, self.canvas_height / img_height)
         new_width = int(img_width * scale_factor)
         new_height = int(img_height * scale_factor)
 
+        img = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
         img = img.resize((new_width, new_height), Image.ANTIALIAS)
-        img_tk = ImageTk.PhotoImage(img)
+
+        self.img_tk = ImageTk.PhotoImage(img)
 
         x_position = (self.canvas_width - new_width) / 2
         y_position = (self.canvas_height - new_height) / 2
 
-        self.canvas.create_image(x_position, y_position, anchor=tk.NW, image=img_tk)
-        self.canvas.img_tk = img_tk
+        self.canvas.create_image(x_position, y_position, anchor=tk.NW, image=self.img_tk)
 
         self.file_name_label.config(
             text=f"File {self.file_number[file_path]}/{self.total_files}: {os.path.basename(file_path)}"
