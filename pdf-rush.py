@@ -27,6 +27,7 @@ class PDFEditorApp:
         self.current_page = 0
         self.total_files = 0
         self.file_number = {}
+        self.file_pages = {}
         self.all_pages = []
         self.pdf_files = []
         self.num_pages = 0
@@ -179,7 +180,9 @@ class PDFEditorApp:
         show_custom_message_box(f"About {self.app_name}", message, hyperlinks)
 
     def ask_file(self):
-        file_path = filedialog.askopenfilename(filetypes=[("Portable Document Format", ".pdf")])
+        file_path = filedialog.askopenfilename(
+            filetypes=[("Portable Document Format", ".pdf")]
+        )
         if file_path:
             self.current_folder = os.path.dirname(file_path)
             self.output_folder = os.path.join(self.current_folder, "_pdf_rush")
@@ -212,6 +215,7 @@ class PDFEditorApp:
             self.unsaved_changes = {}
             self.total_files = len(self.pdf_files)
             self.file_number = {}
+            self.file_pages = {}
             file_count = 0
             for pdf_file in self.pdf_files:
                 file_path = os.path.join(self.current_folder, pdf_file)
@@ -224,6 +228,7 @@ class PDFEditorApp:
                     self.unsaved_changes[file_path] = {"rot": 0, "del": 0}
                     file_count += 1
                     self.file_number[file_path] = file_count
+                    self.file_pages[file_path] = len(pdf_reader.pages)
                 except:
                     messagebox.showinfo("Oops...", f"Failed to open {file_path}")
                     continue
@@ -273,6 +278,7 @@ class PDFEditorApp:
         self.pdf_files = []
         self.all_pages = []
         self.file_number = {}
+        self.file_pages = {}
         self.page_rotations = {}
         self.page_rotations_init = {}
         self.deleted_pages = {}
@@ -290,6 +296,7 @@ class PDFEditorApp:
     def show_current_page(self):
         self.canvas.delete("all")
         file_path, page_index = self.all_pages[self.current_page]
+        file_pages = self.file_pages[file_path]
         page_rotation = self.page_rotations[(file_path, page_index)]
         page_rotation_init = self.page_rotations_init[(file_path, page_index)]
         page_deleted = page_index in self.deleted_pages.get(file_path, set())
@@ -298,7 +305,7 @@ class PDFEditorApp:
         rotated_page = doc.load_page(page_index)
         rotated_page.set_rotation(page_rotation)
 
-        if page_index in self.deleted_pages.get(file_path, set()):
+        if page_deleted:
             watermark_text = "EXTERMINATE"
             watermark_color = (
                 0.9,
@@ -326,7 +333,9 @@ class PDFEditorApp:
         doc.close()
 
         img_width, img_height = pix.width, pix.height
-        scale_factor = min(self.canvas_width / img_width, self.canvas_height / img_height)
+        scale_factor = min(
+            self.canvas_width / img_width, self.canvas_height / img_height
+        )
         new_width = int(img_width * scale_factor)
         new_height = int(img_height * scale_factor)
 
@@ -338,13 +347,15 @@ class PDFEditorApp:
         x_position = (self.canvas_width - new_width) / 2
         y_position = (self.canvas_height - new_height) / 2
 
-        self.canvas.create_image(x_position, y_position, anchor=tk.NW, image=self.img_tk)
+        self.canvas.create_image(
+            x_position, y_position, anchor=tk.NW, image=self.img_tk
+        )
 
         self.file_name_label.config(
             text=f"File {self.file_number[file_path]}/{self.total_files}: {os.path.basename(file_path)}"
         )
         self.page_number_label.config(
-            text=f"Page in file: {page_index + 1}/{len(PyPDF2.PdfReader(file_path).pages)}. Page in folder: {self.current_page + 1}/{self.num_pages}"
+            text=f"Page in file: {page_index + 1}/{file_pages}. Page in folder: {self.current_page + 1}/{self.num_pages}"
         )
         self.page_info_label.config(
             text=f"Rotation: {page_rotation}° (initial: {page_rotation_init}°), to delete: {'YES' if page_deleted else 'no'}"
@@ -399,9 +410,8 @@ class PDFEditorApp:
     def update_unsaved_changes_listbox(self):
         self.unsaved_changes_listbox.delete(0, tk.END)
         for file_path, changes in self.unsaved_changes.items():
-            pages = len(PyPDF2.PdfReader(file_path).pages)
             changes["rot"] = 0
-            for page in range(pages):
+            for page in range(self.file_pages[file_path]):
                 if ((file_path, page) in self.page_rotations) and self.page_rotations[
                     (file_path, page)
                 ] != self.page_rotations_init[(file_path, page)]:
