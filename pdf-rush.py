@@ -156,19 +156,18 @@ class PDFEditorApp:
 
         self.disable_control_buttons()
 
-        self.root.bind("<Left>", lambda event: self.previous_page())
-        self.root.bind("<Right>", lambda event: self.next_page())
-        self.root.bind("<Up>", lambda event: self.rotate_page(90))
-        self.root.bind("<Down>", lambda event: self.rotate_page(-90))
+        self.root.bind("<Up>", lambda event: self.previous_page())
+        self.root.bind("<Down>", lambda event: self.next_page())
+        self.root.bind("<Left>", lambda event: self.rotate_page(-90))
+        self.root.bind("<Right>", lambda event: self.rotate_page(90))
         self.root.bind("<space>", lambda event: self.jump_to_page())
         self.root.bind("<Delete>", lambda event: self.delete_page())
         self.root.bind("<Return>", lambda event: self.save_changes())
-        
 
         self.root.mainloop()
 
     def show_help(self):
-        message = f"Keyboard bindings:\nLeft Arrow: go to the previous page\nRight Arrow: go to the next page\nSpace: go to any page (from total)\nUp Arrow: rotate the current page clockwise\nDown Arrow: rotate the current page counter-clockwise\nDelete: mark page as deleted\nEnter: Save changes"
+        message = f"Keyboard bindings:\nUp Arrow: go to the previous page\nDown Arrow: go to the next page\nSpace: go to any page (from total)\nRight Arrow: rotate the current page clockwise\nLeft Arrow: rotate the current page counter-clockwise\nDelete: mark page as deleted\nEnter: Save changes"
         show_custom_message_box(f"{self.app_name} help", message)
 
     def show_about_info(self):
