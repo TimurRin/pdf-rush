@@ -36,6 +36,8 @@ I was tired of watching my wife suffer through the vicious cycle of 'opening cou
 
 If you don't have Python installed or prefer not to install extra software, we provide ready-to-use binaries in a portable/bundle version. These binaries allow you to launch the app directly without any additional setup, making it easy to use and share.
 
+You can find the latest sources and binaries here: <https://github.com/TimurRin/pdf-rush/releases/latest>
+
 ### Launch directly with Python
 
 As this app is written in Python, you also have the option to launch it directly from the source code. This gives you the flexibility to customize and explore the app further using Python, and is particularly useful for developers or users who are familiar with the Python environment.
