@@ -4,16 +4,18 @@
 
 Features that we want to implement in the near future:
 
-- Keyboard bindings
 - Buttons to switch between whole files
 - Autosave when proceed to another file
 - Specific output directory
-- Order pages
-- Overview of a file and deleted files (thumbnails)
+- Reorder pages
+- Overview of changes (thumbnails)
 - Connect OCR plugin
 - Better design and layout
+- Localizations
 
-<!-- ## Known bugs -->
+## Known bugs
+
+- Interface is not adaptive
 
 ## [Unreleased]
 
