@@ -1,5 +1,10 @@
 {
+  "cfVersion": 1,
+  "package": "pdf-rush",
+  "name": "PDF Rush",
   "major": 0,
   "minor": 2,
-  "patch": 0
+  "patch": 0,
+  "revision": 2,
+  "timestamp": 1690404360
 }
