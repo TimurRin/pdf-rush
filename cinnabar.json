@@ -1,0 +1,15 @@
+{
+  "cinnabarMetaVersion": 1,
+  "description": "A minimalist PDF editor for batch processing and quick manipulation of multiple PDF files",
+  "name": "PDF Rush",
+  "version": {
+    "dev": 1,
+    "major": 0,
+    "minor": 3,
+    "patch": 0,
+    "revision": 3,
+    "text": "0.3.0-dev.1",
+    "timestamp": 1713966936
+  },
+  "stack": {}
+}

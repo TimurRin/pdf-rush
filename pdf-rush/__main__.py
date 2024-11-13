@@ -1,9 +1,3 @@
-# Copyright (c) 2023, Timur Moziev
-# All rights reserved.
-
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-
 import sys, os
 import PyPDF2
 import tkinter as tk
@@ -44,15 +38,11 @@ class PDFEditorApp:
         self.create_ui()
 
     def get_version_info(self):
-        version_file = os.path.join(os.path.dirname(__file__), "version.json")
-        with open(version_file, "r") as f:
-            version_data = json.load(f)
+        cinnabar_file = os.path.join(os.path.dirname(__file__), "..", "cinnabar.json")
+        with open(cinnabar_file, "r") as f:
+            cinnabar_data = json.load(f)
 
-        major = version_data.get("major", 0)
-        minor = version_data.get("minor", 0)
-        patch = version_data.get("patch", 0)
-
-        return f"v{major}.{minor}.{patch}"
+        return f"v{cinnabar_data['version']['text']}"
 
     def create_ui(self):
         self.main_frame = tk.Frame(self.root)

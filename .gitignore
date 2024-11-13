@@ -1,3 +1,32 @@
-*.pdf
-/.vscode
-/build
+# Logs
+logs
+*.log
+
+# Compile data
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Editor directories and files
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vscode
+
+# Local settings
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+config.json
